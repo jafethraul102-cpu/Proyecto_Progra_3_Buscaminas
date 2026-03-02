@@ -1,9 +1,34 @@
 #include <iostream>
+#include <string>
 
 using namespace std;
 
+//git pull = para descargar los cambios
+//git push = para subir los cambios
+//git add . = agregar los cambios al repo local tu compu
+//git commit -m "msj de lo add" =  si o si va despues del git add .
+
+struct Usuario {
+    string Nombre;
+    string contrasena;
+    int puntuacion;
+};
+
+int opcion;
+
 int main()
 {
+        cout << "--BUSCAMINAS--" << endl;
+        cout << "1)login" << endl;
+        cout << "2)registrar" << endl;
+        cout << "3)salir." << endl;
+
+
+
+
+    return 0;
+}
+/*
     //MENU1
     cout << "--BUSCAMINAS--" << endl;
     cout << "1)login" << endl;
@@ -35,5 +60,4 @@ int main()
     cout << "3)    1 2 3 4 5 6 7 -> x" << endl;
     cout << "Escriba la direccion de lacelda(x(espacio)y):"<< endl;
     cout << "5) salir." << endl;
-    return 0;
-}
+*/
