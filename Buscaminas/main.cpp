@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <windows.h>
 
 using namespace std;
 
@@ -14,119 +15,123 @@ struct Usuario {
     int puntuacion;
 };
 
-int opcion, opcion2, opcion3;
+void menuPrincipal();
+void menuRegistro();
+void menuPartidas();
 
 int main()
 {
-    do {
-        cout << "--BUSCAMINAS--" << endl;
-        cout << "1)login" << endl;
-        cout << "2)registrar" << endl;
-        cout << "3)salir." << endl;
-        cin >> opcion;
+    SetConsoleOutputCP(CP_UTF8);
 
-        switch(opcion)
-        {
-        case 1:
-        case 2:
-
-            do {
-                cout << "--BUSCAMINAS--" << endl;
-                cout << "1)PARTIDAS." << endl;
-                cout << "2)Rankin." << endl;
-                cout << "3)salir." << endl;
-                cin >> opcion2;
-
-                switch(opcion2)
-                {
-                case 1:
-                    do {
-                        cout << "1) Partida niveles secuenciales" << endl;
-                        cout << "2) partida Facil" << endl;
-                        cout << "3) Partida Normal." << endl;
-                        cout << "4) Partida Dificil" << endl;
-                        cin >> opcion3;
-
-                        switch(opcion3)
-                        {
-                        case 1:
-                            cout << "Elegiste niveles secuenciales\n";
-                            break;
-                        case 2:
-                            cout << "Elegiste partida facil\n";
-                            break;
-                        case 3:
-                            cout << "Elegiste partida normal\n";
-                            break;
-                        case 4:
-                            cout << "Elegiste partida dificil\n";
-                            break;
-                        case 5:
-                            break;
-                        default:
-                            cout << "Opcion invalida\n";
-                        }
-
-                    } while (opcion3 != 5);
-                    break;
-
-                case 2:
-                    cout << "Mostrando ranking...\n";
-                    break;
-
-                case 3:
-                    break;
-
-                default:
-                    cout << "Opcion invalida\n";
-                }
-
-            } while (opcion2 != 3);
-            break;
-
-        case 3:
-            cout << "Saliendo del sistema...\n";
-            break;
-
-        default:
-            cout << "Opcion invalida\n";
-        }
-
-    } while (opcion != 3);
+    menuRegistro();
 
     return 0;
 }
 
-/*
-    //MENU1
-    cout << "--BUSCAMINAS--" << endl;
-    cout << "1)login" << endl;
-    cout << "2)registrar" << endl;
-    cout << "3)salir." << endl;
+void menuPrincipal(){
+    int opcionPri;
+    do {
+        cout << "\n--💣💣BUSCAMINAS💣💣--" << endl;
+        cout << "1)PARTIDAS." << endl;
+        cout << "2)Rankin." << endl;
+        cout << "3)salir." << endl;
+        cin >> opcionPri;
 
-    //MENU2
-    cout << "--BUSCAMINAS--" << endl;
-    cout << "1)PARTIDAS." << endl;
-    cout << "2)Rankin." << endl;
-    cout << "3)salir." << endl;
+        switch(opcionPri)
+        {
+        case 1:{
+            menuPartidas();
+            break;
+        }
+        case 2:{
+            break;
+        }
+        case 3:{
+            cout << endl;
+            break;
+        }
+        default:{
+            cout << "Opcion invalida\n";
+        }
+        }
 
-    //MENU3
-    cout << "1) Partida niveles secuenciales" << endl;
-    cout << "2) partida Facil" << endl;
-    cout << "3) Partida Normal." << endl;
-    cout << "4) Partida Dificil" << endl;
+    } while (opcionPri != 3);
+}
 
-    //Partida
-    cout << "1) colocar bandera." << endl;
-    cout << "2) quitar bandera." << endl;
-    cout << "3) y                  " << endl;
-    cout << "4) -----------------" << endl;
-    cout << "4) 1| 0 0 0 0 0 0 0 |"<< endl;
-    cout << "4) 2| 0 0 0 0 0 0 0 |"<< endl;
-    cout << "4) 3| 0 0 0 0 0 0 0 |"<< endl;
-    cout << "4) 4| 0 0 0 0 0 0 0 |"<< endl;
-    cout << "4) -----------------" << endl;
-    cout << "3)    1 2 3 4 5 6 7 -> x" << endl;
-    cout << "Escriba la direccion de lacelda(x(espacio)y):"<< endl;
-    cout << "5) salir." << endl;
-*/
+void menuRegistro(){
+    string nombre, contrasena;
+    int opcionReg;
+    do {
+        cout << "--BUSCAMINAS--" << endl;
+        cout << "1)Registro." << endl;
+        cout << "2)Login." << endl;
+        cout << "3)salir." << endl;
+        cin >> opcionReg;
+
+        switch(opcionReg)
+        {
+        case 1:{
+            cout << "== REGISTRO ==" << endl;
+            cout << "Ingrese el nombre de usuario." << endl;
+            cin >> nombre;
+            cout << "Ingrese contrasena." << endl;
+            cin >> contrasena;
+            menuPrincipal();
+            break;
+        }
+        case 2:{
+            cout << "== LOGIN ==" << endl;
+            cout << "Ingrese el nombre de usuario." << endl;
+            cin >> nombre;
+            cout << "Ingrese contrasena." << endl;
+            cin >> contrasena;
+            menuPrincipal();
+            break;
+        }
+        case 3:{
+            break;
+        }
+        default:{
+            cout << "Opcion invalida\n";
+        }
+        }
+    } while (opcionReg != 3);
+}
+
+void menuPartidas(){
+    int opcionPar;
+    do {
+        cout << "== TIPOS DE JUEGO ==" << endl;
+        cout << "\n1) Partida niveles secuenciales." << endl;
+        cout << "2) partida Facil." << endl;
+        cout << "3) Partida Normal." << endl;
+        cout << "4) Partida Dificil." << endl;
+        cout << "5) Salir." << endl;
+        cin >> opcionPar;
+
+        switch(opcionPar)
+        {
+        case 1:{
+            break;
+        }
+        case 2:{
+            break;
+        }
+        case 3:{
+            cout << "Modo Normal." << endl;
+            break;
+        }
+        case 4:{
+            cout << "Modo Dificl." << endl;
+            break;
+        }
+        case 5:{
+            break;
+
+        }
+        default:{
+            cout << "Opcion invalida\n";
+        }
+        }
+     } while (opcionPar != 5);
+}
