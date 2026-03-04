@@ -1,4 +1,5 @@
 #include <iostream>
+#include <limits>
 #include <string>
 #include <windows.h>
 
@@ -18,10 +19,31 @@ struct Usuario {
 void menuPrincipal();
 void menuRegistro();
 void menuPartidas();
+string leerTextoNoVacio(const string &mensaje);
+int leerEnteroSeguro(const string &mensaje);
 
 int main()
 {
     SetConsoleOutputCP(CP_UTF8);
+
+    cout << R"(
+´´´´´´´´´´´´´´´´´´´´´´´$¶´´´´´¶´´´´´¶¢
+´´´´´´´´´´´¶¶¶¶¶¶¶´´´´´´´¶¢´´´¶´´´ø¶´´
+´´´´´´´´´´¶¶´´´´ø¶¶¶´´´´´´oø´´ø´´øo´´´
+´´´´´´´´´´¶7´´´´´´´¶¶¶´´´´´´1´´´1´´´´1o
+´´´´´´´¶¶¶¶¶¶¶´´´´´´´¶¶¶7´´´´´´´´1o¶¶¶ø
+´´´´´´´¶¶¶¶¶¶¶´´´´´´´´´¶¶¶¶¶¶¶¶´´1´´´´
+´´´´´o¶¶¶¶¶¶¶¶¶ø´´´´´´´´´´´´´´´´´´o$¢´
+´´´¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶´´´´´´´´´´¢´´1ø´´´1¶¶
+´´¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶o´´´´´´´1$´´´¶´´´´´´
+´¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶´´´´´´´¶´´´´o¶´´´´´
+´¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶´´´´´¶¶´´´´´´´´´´´
+´´¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶´´´´´´´´´´´´´´´´´´´
+´´´¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶´´´´´´´´´´´´´´´´´´´´
+´´´´´¶¶¶¶¶¶¶¶¶¶¶¶´´´´´´´´´´´´´´´´´´´´´´
+´´´´´´´¶¶¶¶¶¶¶¶´´´´´´´´´´´´´´´´´´´´´´´´
+
+)";
 
     menuRegistro();
 
@@ -35,7 +57,7 @@ void menuPrincipal(){
         cout << "1)PARTIDAS." << endl;
         cout << "2)Rankin." << endl;
         cout << "3)salir." << endl;
-        cin >> opcionPri;
+        opcionPri = leerEnteroSeguro("Elija una opcion");
 
         switch(opcionPri)
         {
@@ -66,16 +88,16 @@ void menuRegistro(){
         cout << "1)Registro." << endl;
         cout << "2)Login." << endl;
         cout << "3)salir." << endl;
-        cin >> opcionReg;
+        opcionReg = leerEnteroSeguro("Elija una opcion");
 
         switch(opcionReg)
         {
         case 1:{
             cout << "== REGISTRO ==" << endl;
             cout << "Ingrese el nombre de usuario." << endl;
-            cin >> nombre;
+            nombre = leerTextoNoVacio("Nombre: ");
             cout << "Ingrese contrasena." << endl;
-            cin >> contrasena;
+            contrasena = leerTextoNoVacio("Contraseña: ");
             menuPrincipal();
             break;
         }
@@ -107,14 +129,16 @@ void menuPartidas(){
         cout << "3) Partida Normal." << endl;
         cout << "4) Partida Dificil." << endl;
         cout << "5) Salir." << endl;
-        cin >> opcionPar;
+        opcionPar = leerEnteroSeguro("Elija una opcion");
 
         switch(opcionPar)
         {
         case 1:{
+            cout << "Partidas en modo secuencial." << endl;
             break;
         }
         case 2:{
+            cout << "Modo facil." << endl;
             break;
         }
         case 3:{
@@ -134,4 +158,35 @@ void menuPartidas(){
         }
         }
      } while (opcionPar != 5);
+}
+
+string leerTextoNoVacio(const string &mensaje){
+    string texto;
+    while(true){
+        cout<<mensaje;
+        getline(cin,texto);
+
+        if(!texto.empty()){
+            return texto;
+        }
+
+        cout<<"este campo no puede quedar vacio intente de nuevo.";
+
+    }
+}
+
+int leerEnteroSeguro(const string &mensaje){
+    int numero;
+    while(true){
+        cout<<mensaje;
+
+        if(cin>>numero){
+            cin.ignore(numeric_limits<streamsize>::max(),'\n');
+            return numero;
+        }
+
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(),'\n');
+        cout<<"Entrada invalida porfavor escriba un numero entero\n";
+    }
 }
