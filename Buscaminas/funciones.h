@@ -2,8 +2,7 @@
 #define FUNCIONES_H
 
 class funciones
-{
-public:
+{public:
     funciones();
 };
 

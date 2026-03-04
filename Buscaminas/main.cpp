@@ -1,3 +1,4 @@
+#include <iomanip>
 #include <iostream>
 #include <limits>
 #include <string>
@@ -27,21 +28,33 @@ int main()
     SetConsoleOutputCP(CP_UTF8);
 
     cout << R"(
-´´´´´´´´´´´´´´´´´´´´´´´$¶´´´´´¶´´´´´¶¢
-´´´´´´´´´´´¶¶¶¶¶¶¶´´´´´´´¶¢´´´¶´´´ø¶´´
-´´´´´´´´´´¶¶´´´´ø¶¶¶´´´´´´oø´´ø´´øo´´´
-´´´´´´´´´´¶7´´´´´´´¶¶¶´´´´´´1´´´1´´´´1o
-´´´´´´´¶¶¶¶¶¶¶´´´´´´´¶¶¶7´´´´´´´´1o¶¶¶ø
-´´´´´´´¶¶¶¶¶¶¶´´´´´´´´´¶¶¶¶¶¶¶¶´´1´´´´
-´´´´´o¶¶¶¶¶¶¶¶¶ø´´´´´´´´´´´´´´´´´´o$¢´
-´´´¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶´´´´´´´´´´¢´´1ø´´´1¶¶
-´´¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶o´´´´´´´1$´´´¶´´´´´´
-´¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶´´´´´´´¶´´´´o¶´´´´´
-´¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶´´´´´¶¶´´´´´´´´´´´
-´´¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶´´´´´´´´´´´´´´´´´´´
-´´´¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶´´´´´´´´´´´´´´´´´´´´
-´´´´´¶¶¶¶¶¶¶¶¶¶¶¶´´´´´´´´´´´´´´´´´´´´´´
-´´´´´´´¶¶¶¶¶¶¶¶´´´´´´´´´´´´´´´´´´´´´´´´
+_§§§§§§___§§__§§-§§§§§§__§§§§§§__§§§§___
+_§§___§§__§§__§§_§§___§__§§_____§§__§§__
+_§§§§§§___§§__§§__§§§____§§_____§§§§§§__
+_§§___§§__§§__§§_§___§§__§§_____§§__§§__
+_§§§§§§___§§§§§§_§§§§§§__§§§§§§_§§__§§__
+________________________________________
+_§§§_§§§__§§__§§___§§__§§§§__§§§§§§_____
+_§§_§_§§__§§__§§§§_§§_§§__§§_§§___§_____
+_§§___§§__§§__§§-§§§§_§§§§§§___§§_______
+_§§___§§__§§__§§___§§_§§__§§_§___§§_____
+_§§___§§__§§ _§§___§§_§§__§§_§§§§§§_____
+________________________________________
+´´´´´´´´´´´´´´´´´´´´´´´$¶´´´´´¶´´´´´¶¢´´
+´´´´´´´´´´´¶¶¶¶¶¶¶´´´´´´´¶¢´´´¶´´´ø¶´´´´
+´´´´´´´´´´¶¶´´´´ø¶¶¶´´´´´´oø´´ø´´øo´´´´´
+´´´´´´´´´´¶7´´´´´´´¶¶¶´´´´´´1´´´1´´´´1o´
+´´´´´´´¶¶¶¶¶¶¶´´´´´´´¶¶¶7´´´´´´´´1o¶¶¶ø´
+´´´´´´´¶¶¶¶¶¶¶´´´´´´´´´¶¶¶¶¶¶¶¶´´1´´´´´´
+´´´´´o¶¶¶¶¶¶¶¶¶ø´´´´´´´´´´´´´´´´´´o$¢´´´
+´´´¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶´´´´´´´´´´¢´´1ø´´´1¶¶´
+´´¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶o´´´´´´´1$´´´¶´´´´´´´
+´¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶´´´´´´´¶´´´´o¶´´´´´´
+´¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶´´´´´¶¶´´´´´´´´´´´´
+´´¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶´´´´´´´´´´´´´´´´´´´´
+´´´¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶´´´´´´´´´´´´´´´´´´´´´
+´´´´´¶¶¶¶¶¶¶¶¶¶¶¶´´´´´´´´´´´´´´´´´´´´´´´
+´´´´´´´¶¶¶¶¶¶¶¶´´´´´´´´´´´´´´´´´´´´´´´´´
 
 )";
 
@@ -50,45 +63,20 @@ int main()
     return 0;
 }
 
-void menuPrincipal(){
-    int opcionPri;
-    do {
-        cout << "\n--💣💣BUSCAMINAS💣💣--" << endl;
-        cout << "1)PARTIDAS." << endl;
-        cout << "2)Rankin." << endl;
-        cout << "3)salir." << endl;
-        opcionPri = leerEnteroSeguro("Elija una opcion");
-
-        switch(opcionPri)
-        {
-        case 1:{
-            menuPartidas();
-            break;
-        }
-        case 2:{
-            break;
-        }
-        case 3:{
-            cout << endl;
-            break;
-        }
-        default:{
-            cout << "Opcion invalida\n";
-        }
-        }
-
-    } while (opcionPri != 3);
-}
-
 void menuRegistro(){
     string nombre, contrasena;
     int opcionReg;
     do {
-        cout << "--BUSCAMINAS--" << endl;
+        cout << string(40, '=') << endl;
+        cout << setw(50)<< "=======🚩🚩💣💣BUSCAMINAS 💣💣🚩🚩";
+        cout <<"======"<< endl;
+        cout << string(40, '=') << endl;
         cout << "1)Registro." << endl;
         cout << "2)Login." << endl;
         cout << "3)salir." << endl;
-        opcionReg = leerEnteroSeguro("Elija una opcion");
+        opcionReg = leerEnteroSeguro("Elija una opcion: ");
+        cout << string(40, '=') <<'\n'<< endl;
+
 
         switch(opcionReg)
         {
@@ -129,7 +117,7 @@ void menuPartidas(){
         cout << "3) Partida Normal." << endl;
         cout << "4) Partida Dificil." << endl;
         cout << "5) Salir." << endl;
-        opcionPar = leerEnteroSeguro("Elija una opcion");
+        opcionPar = leerEnteroSeguro("Elija una opcion: ");
 
         switch(opcionPar)
         {
@@ -157,7 +145,7 @@ void menuPartidas(){
             cout << "Opcion invalida\n";
         }
         }
-     } while (opcionPar != 5);
+    } while (opcionPar != 5);
 }
 
 string leerTextoNoVacio(const string &mensaje){
@@ -173,6 +161,36 @@ string leerTextoNoVacio(const string &mensaje){
         cout<<"este campo no puede quedar vacio intente de nuevo.";
 
     }
+}
+
+void menuPrincipal(){
+    int opcionPri;
+    do {
+        cout << "\n--💣💣 MENU PRINCIPAL 💣💣--" << endl;
+        cout << "1)PARTIDAS." << endl;
+        cout << "2)Rankin." << endl;
+        cout << "3)salir." << endl;
+        opcionPri = leerEnteroSeguro("Elija una opcion: ");
+
+        switch(opcionPri)
+        {
+        case 1:{
+            menuPartidas();
+            break;
+        }
+        case 2:{
+            break;
+        }
+        case 3:{
+            cout << endl;
+            break;
+        }
+        default:{
+            cout << "Opcion invalida\n";
+        }
+        }
+
+    } while (opcionPri != 3);
 }
 
 int leerEnteroSeguro(const string &mensaje){

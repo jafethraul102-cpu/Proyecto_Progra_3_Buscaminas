@@ -1,3 +1,5 @@
 #include "funciones.h"
 
-funciones::funciones() {}
+funciones::funciones() {
+
+}
