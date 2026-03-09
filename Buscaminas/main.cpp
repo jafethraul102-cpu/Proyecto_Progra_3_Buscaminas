@@ -136,8 +136,8 @@ void menuPartidas(){
         {
         case 1:{
             cout << "Partidas en modo secuencial." << endl;
-            funciones f;
-            f.imprimirTablero();
+            funciones funciones;
+            funciones.imprimirTablero();
 
             break;
         }
