@@ -34,7 +34,7 @@ int leerEnteroSeguro(const string &mensaje);
 void cargarUsuariosDesdeArchivo(vector<Usuario> &usuarios);
 void guardarUsuariosEnArchivo(const vector<Usuario> &usuarios);
 int buscarUsuario(const vector<Usuario> &usuarios,string nombre);
-void registrarUsuario(vector<Usuario> &usuarios);
+bool registrarUsuario(vector<Usuario> &usuarios);
 bool loginUsuario(vector<Usuario> &usuarios);
 
 int main()
@@ -99,7 +99,10 @@ void menuRegistro(vector<Usuario> &usuarios){
         switch(opcionReg)
         {
         case 1:{
-            registrarUsuario(usuarios);
+
+            if(registrarUsuario(usuarios)){
+                menuPrincipal(usuarios);
+            }
             break;
         }
         case 2:{
@@ -308,7 +311,7 @@ int buscarUsuario(const vector<Usuario> &usuarios,string nombre){
     return -1;
 }
 
-void registrarUsuario(vector<Usuario> &usuarios){
+bool registrarUsuario(vector<Usuario> &usuarios){
 
     cout<<"\n===== REGISTRO =====\n";
 
@@ -316,7 +319,7 @@ void registrarUsuario(vector<Usuario> &usuarios){
 
     if(buscarUsuario(usuarios,nombre) != -1){
         cout<<"Ese usuario ya existe\n";
-        return;
+        return false;
     }
 
     string contrasena = leerTextoNoVacio("Contraseña: ");
@@ -330,10 +333,10 @@ void registrarUsuario(vector<Usuario> &usuarios){
 
     guardarUsuariosEnArchivo(usuarios);
 
-    // memoria dinamica
     usuarioActual = new Usuario(nuevo);
 
     cout<<"Usuario registrado y logueado\n";
+    return true;
 }
 
 bool loginUsuario(vector<Usuario> &usuarios){

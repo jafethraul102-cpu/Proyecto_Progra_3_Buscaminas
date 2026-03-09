@@ -7,14 +7,15 @@ using namespace std;
 
 funciones::funciones(){}
 
+const int NIVEL_BASIC=8;
+
 void funciones::imprimirTablero(){
 
     char tablero1[8][8];
     char tablero2[8][8];
 
-    // llenar ambos tableros con .
-    for(int i = 0; i < 8; i++){
-        for(int j = 0; j < 8; j++){
+    for(int i = 0; i < NIVEL_BASIC; i++){
+        for(int j = 0; j < NIVEL_BASIC; j++){
             tablero1[i][j] = '.';
             tablero2[i][j] = '.';
         }
@@ -28,8 +29,8 @@ void funciones::imprimirTablero(){
 
     while(colocados < 10){
 
-        int fila = rand() % 8;
-        int columna = rand() % 8;
+        int fila = rand() % NIVEL_BASIC;
+        int columna = rand() % NIVEL_BASIC;
 
         if(tablero1[fila][columna] != 'X'){
             tablero1[fila][columna] = *simbolo;
@@ -37,10 +38,8 @@ void funciones::imprimirTablero(){
         }
 
     }
-
-    // SOLO imprimimos el segundo tablero
-    for(int i = 0; i < 8; i++){
-        for(int j = 0; j < 8; j++){
+    for(int i = 0; i < NIVEL_BASIC; i++){
+        for(int j = 0; j < NIVEL_BASIC; j++){
             cout << tablero2[i][j] << " ";
         }
         cout << endl;
