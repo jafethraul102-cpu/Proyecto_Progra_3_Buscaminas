@@ -3,7 +3,9 @@
 #include <limits>
 #include <string>
 #include <windows.h>
-
+#include "funciones.h"
+#include <vector>
+#include <fstream>
 using namespace std;
 
 //git pull = para descargar los cambios
@@ -15,17 +17,32 @@ struct Usuario {
     string Nombre;
     string contrasena;
     int puntuacion;
+
 };
 
-void menuPrincipal();
-void menuRegistro();
+const string NOMBRE_ARCHIVO = "usuarios.txt";
+const char DELIMITADOR = '|';
+Usuario* usuarioActual = nullptr;
+
+void menuPrincipal(vector<Usuario> &usuarios);
+void menuRegistro(vector<Usuario> &usuarios);
 void menuPartidas();
 string leerTextoNoVacio(const string &mensaje);
 int leerEnteroSeguro(const string &mensaje);
 
+
+void cargarUsuariosDesdeArchivo(vector<Usuario> &usuarios);
+void guardarUsuariosEnArchivo(const vector<Usuario> &usuarios);
+int buscarUsuario(const vector<Usuario> &usuarios,string nombre);
+void registrarUsuario(vector<Usuario> &usuarios);
+bool loginUsuario(vector<Usuario> &usuarios);
+
 int main()
 {
     SetConsoleOutputCP(CP_UTF8);
+    vector<Usuario> usuarios;
+
+    cargarUsuariosDesdeArchivo(usuarios);
 
     cout << R"(
 _§§§§§§___§§__§§-§§§§§§__§§§§§§__§§§§___
@@ -58,12 +75,12 @@ ________________________________________
 
 )";
 
-    menuRegistro();
+    menuRegistro(usuarios);
 
     return 0;
 }
 
-void menuRegistro(){
+void menuRegistro(vector<Usuario> &usuarios){
     string nombre, contrasena;
     int opcionReg;
     do {
@@ -74,6 +91,7 @@ void menuRegistro(){
         cout << "1)Registro." << endl;
         cout << "2)Login." << endl;
         cout << "3)salir." << endl;
+        cout << string(40, '=') << endl;
         opcionReg = leerEnteroSeguro("Elija una opcion: ");
         cout << string(40, '=') <<'\n'<< endl;
 
@@ -81,21 +99,13 @@ void menuRegistro(){
         switch(opcionReg)
         {
         case 1:{
-            cout << "== REGISTRO ==" << endl;
-            cout << "Ingrese el nombre de usuario." << endl;
-            nombre = leerTextoNoVacio("Nombre: ");
-            cout << "Ingrese contrasena." << endl;
-            contrasena = leerTextoNoVacio("Contraseña: ");
-            menuPrincipal();
+            registrarUsuario(usuarios);
             break;
         }
         case 2:{
-            cout << "== LOGIN ==" << endl;
-            cout << "Ingrese el nombre de usuario." << endl;
-            cin >> nombre;
-            cout << "Ingrese contrasena." << endl;
-            cin >> contrasena;
-            menuPrincipal();
+            if(loginUsuario(usuarios)){
+                menuPrincipal(usuarios);
+            }
             break;
         }
         case 3:{
@@ -123,6 +133,9 @@ void menuPartidas(){
         {
         case 1:{
             cout << "Partidas en modo secuencial." << endl;
+            funciones f;
+            f.imprimirTablero();
+
             break;
         }
         case 2:{
@@ -163,10 +176,14 @@ string leerTextoNoVacio(const string &mensaje){
     }
 }
 
-void menuPrincipal(){
-    int opcionPri;
+void menuPrincipal(vector<Usuario> &usuarios){
+int opcionPri;
     do {
-        cout << "\n--💣💣 MENU PRINCIPAL 💣💣--" << endl;
+        cout <<endl;
+        cout << string(40, '=') << endl;
+        cout << setw(45)<< "=====🚩🚩💣💣MENU PRINCIPAL💣💣🚩🚩";
+        cout <<"====="<< endl;
+        cout << string(40, '=') << endl;
         cout << "1)PARTIDAS." << endl;
         cout << "2)Rankin." << endl;
         cout << "3)salir." << endl;
@@ -182,7 +199,12 @@ void menuPrincipal(){
             break;
         }
         case 3:{
-            cout << endl;
+            if(usuarioActual != nullptr){
+                delete usuarioActual;
+                usuarioActual = nullptr;
+            }
+            cargarUsuariosDesdeArchivo(usuarios);
+            cout<<"Sesion cerrada\n";
             break;
         }
         default:{
@@ -192,6 +214,7 @@ void menuPrincipal(){
 
     } while (opcionPri != 3);
 }
+
 
 int leerEnteroSeguro(const string &mensaje){
     int numero;
@@ -207,4 +230,134 @@ int leerEnteroSeguro(const string &mensaje){
         cin.ignore(numeric_limits<streamsize>::max(),'\n');
         cout<<"Entrada invalida porfavor escriba un numero entero\n";
     }
+}
+
+void cargarUsuariosDesdeArchivo(vector<Usuario> &usuarios){
+
+    ifstream archivoEntrada(NOMBRE_ARCHIVO.c_str());
+    usuarios.clear();
+
+    if(!archivoEntrada.is_open()){
+        return;
+    }
+
+    string linea;
+
+    while(getline(archivoEntrada,linea)){
+
+        if(linea.empty()){
+            continue;
+        }
+
+        size_t p1 = linea.find(DELIMITADOR);
+        size_t p2 = linea.find(DELIMITADOR,p1+1);
+
+        if(p1==string::npos || p2==string::npos){
+            continue;
+        }
+
+        Usuario usuarioLeido;
+
+        usuarioLeido.Nombre = linea.substr(0,p1);
+        usuarioLeido.contrasena = linea.substr(p1+1,p2-(p1+1));
+
+        string puntTexto = linea.substr(p2+1);
+
+        try{
+            usuarioLeido.puntuacion = stoi(puntTexto);
+        }catch(...){
+            usuarioLeido.puntuacion = 0;
+        }
+
+        usuarios.push_back(usuarioLeido);
+    }
+
+    archivoEntrada.close();
+}
+
+void guardarUsuariosEnArchivo(const vector<Usuario> &usuarios){
+
+    ofstream archivoSalida(NOMBRE_ARCHIVO.c_str(),ios::trunc);
+
+    if(!archivoSalida.is_open()){
+        cout<<"ERROR: no se puede abrir el archivo\n";
+        return;
+    }
+
+    for(int i=0;i<(int)usuarios.size();i++){
+
+        archivoSalida
+            <<usuarios[i].Nombre<<DELIMITADOR
+            <<usuarios[i].contrasena<<DELIMITADOR
+            <<usuarios[i].puntuacion<<'\n';
+
+    }
+
+    archivoSalida.close();
+}
+int buscarUsuario(const vector<Usuario> &usuarios,string nombre){
+
+    for(int i=0;i<(int)usuarios.size();i++){
+
+        if(usuarios[i].Nombre == nombre){
+            return i;
+        }
+
+    }
+
+    return -1;
+}
+
+void registrarUsuario(vector<Usuario> &usuarios){
+
+    cout<<"\n===== REGISTRO =====\n";
+
+    string nombre = leerTextoNoVacio("Nombre: ");
+
+    if(buscarUsuario(usuarios,nombre) != -1){
+        cout<<"Ese usuario ya existe\n";
+        return;
+    }
+
+    string contrasena = leerTextoNoVacio("Contraseña: ");
+
+    Usuario nuevo;
+    nuevo.Nombre = nombre;
+    nuevo.contrasena = contrasena;
+    nuevo.puntuacion = 0;
+
+    usuarios.push_back(nuevo);
+
+    guardarUsuariosEnArchivo(usuarios);
+
+    // memoria dinamica
+    usuarioActual = new Usuario(nuevo);
+
+    cout<<"Usuario registrado y logueado\n";
+}
+
+bool loginUsuario(vector<Usuario> &usuarios){
+
+    cout<<"\n===== LOGIN =====\n";
+
+    string nombre = leerTextoNoVacio("Nombre: ");
+    string contrasena = leerTextoNoVacio("Contraseña: ");
+
+    int pos = buscarUsuario(usuarios,nombre);
+
+    if(pos == -1){
+        cout<<"Usuario no existe\n";
+        return false;
+    }
+
+    if(usuarios[pos].contrasena == contrasena){
+
+        usuarioActual = new Usuario(usuarios[pos]);
+
+        cout<<"Login exitoso\n";
+        return true;
+    }
+
+    cout<<"Contraseña incorrecta\n";
+    return false;
 }
