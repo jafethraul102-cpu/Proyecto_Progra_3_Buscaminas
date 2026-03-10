@@ -4,7 +4,7 @@
 class funciones{
 public:
     funciones();
-    void imprimirTablero();
+    void imprimirTablero(int filas, int colum, int bombas);
 };
 
 #endif

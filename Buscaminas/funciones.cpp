@@ -7,15 +7,13 @@ using namespace std;
 
 funciones::funciones(){}
 
-int NIVEL_BASIC=8;
+void funciones::imprimirTablero(int filas, int colum, int bombas){
 
-void funciones::imprimirTablero(){
+    char tablero1[filas][colum];
+    char tablero2[filas][colum];
 
-    char tablero1[8][8];
-    char tablero2[8][8];
-
-    for(int i = 0; i < NIVEL_BASIC; i++){
-        for(int j = 0; j < NIVEL_BASIC; j++){
+    for(int i = 0; i < filas; i++){
+        for(int j = 0; j < colum; j++){
             tablero1[i][j] = '.';
             tablero2[i][j] = '.';
         }
@@ -27,10 +25,10 @@ void funciones::imprimirTablero(){
 
     int colocados = 0;
 
-    while(colocados < 10){
+    while(colocados < bombas){
 
-        int fila = rand() % NIVEL_BASIC;
-        int columna = rand() % NIVEL_BASIC;
+        int fila = rand() % filas;
+        int columna = rand() % colum;
 
         if(tablero1[fila][columna] != 'X'){
             tablero1[fila][columna] = *simbolo;
@@ -38,14 +36,17 @@ void funciones::imprimirTablero(){
         }
 
     }
-    for(int i = 0; i < NIVEL_BASIC; i++){
-        for(int j = 0; j < NIVEL_BASIC; j++){
+    for(int i = 0; i < filas; i++){
+        for(int j = 0; j < colum; j++){
             cout << tablero2[i][j] << " ";
         }
         cout << endl;
     }
-    for(int i = 0; i < NIVEL_BASIC; i++){
-        for(int j = 0; j < NIVEL_BASIC; j++){
+
+    cout << endl;
+
+    for(int i = 0; i < filas; i++){
+        for(int j = 0; j < colum; j++){
             cout << tablero1[i][j]<< " ";
         }
         cout << endl;

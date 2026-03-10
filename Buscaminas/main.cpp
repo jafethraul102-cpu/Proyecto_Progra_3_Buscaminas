@@ -380,6 +380,11 @@ void menuMiCuenta(vector<Usuario> &usuarios){
 
 void menuPartidas(){
     int opcionPar;
+    int bombas =0;
+    int colum=0;
+    int filas=0;
+    funciones funciones;
+
     do {
         cout << "" << endl;
         cout << "========================================" << endl;
@@ -402,21 +407,35 @@ void menuPartidas(){
         {
         case 1:{
             cout << "Partidas en modo secuencial.👾" << endl;
-            funciones funciones;
-            funciones.imprimirTablero();
+            filas=8;
+            colum=8;
+            bombas=10;
+            funciones.imprimirTablero(filas,colum,bombas);
 
             break;
         }
         case 2:{
             cout << "Modo facil.😊" << endl;
+            filas=8;
+            colum=8;
+            bombas=10;
+            funciones.imprimirTablero(filas,colum,bombas);
             break;
         }
         case 3:{
             cout << "Modo Normal.😅" << endl;
+            filas=16;
+            colum=16;
+            bombas=40;
+            funciones.imprimirTablero(filas,colum,bombas);
             break;
         }
         case 4:{
             cout << "Modo Dificl.💀" << endl;
+            filas=16;
+            colum=30;
+            bombas=99;
+            funciones.imprimirTablero(filas,colum,bombas);
             break;
         }
         case 5:{
