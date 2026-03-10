@@ -284,7 +284,7 @@ void menuMiCuenta(vector<Usuario> &usuarios){
             if(usuarioActual != nullptr){
                 cout << endl;
                 cout << string(40,'=') << endl;
-                cout << "===== MIS DATOS =====\n";
+                cout << "============== MIS  DATOS ==============\n";
                 cout << string(40,'=') << endl;
                 cout << "Usuario: " << usuarioActual->Nombre << endl;
                 cout << string(40,'=') << endl;
@@ -327,20 +327,22 @@ void menuMiCuenta(vector<Usuario> &usuarios){
         }
 
         case 3:{
+                        cout << endl;
             cout << string(40,'=') << endl;
             cout << "Ingrese su contraseña actual.\n";
+            cout << string(40,'=') << endl;
             string passActual = leerTextoNoVacio("Contraseña actual: ");
 
             if(passActual != usuarioActual->contrasena){
+                cout << string(40,'=') << endl;
                 cout << "Contraseña incorrecta.\n";
                 cout << string(40,'=') << endl;
                 break;
             }
             int confirm;
             cout << string(40,'=') << endl;
-            cout << "¿Seguro que desea eliminar su cuenta? (si=1/no=0): ";
             confirm = leerEnteroSeguro("¿Seguro que desea eliminar su cuenta? \n(si=1/no=0): ");
-            cout<<endl;
+
             if(confirm == 1){
 
                 int pos = buscarUsuario(usuarios, usuarioActual->Nombre);
@@ -353,9 +355,10 @@ void menuMiCuenta(vector<Usuario> &usuarios){
 
                     delete usuarioActual;
                     usuarioActual = nullptr;
-
+                    cout << string(40,'=') << endl;
                     cout << "Cuenta eliminada correctamente.\n";
                     cout << string(40,'=') << endl;
+                    cout<<endl;
                     menuRegistro(usuarios);
                     return;
                 }
