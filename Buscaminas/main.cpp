@@ -6,6 +6,8 @@
 #include "funciones.h"
 #include <vector>
 #include <fstream>
+#include <cstdlib>
+
 using namespace std;
 
 //git pull = para descargar los cambios
@@ -39,6 +41,9 @@ bool loginUsuario(vector<Usuario> &usuarios);
 
 int main()
 {
+    system("color 87");
+    system("title BUSCAMINAS");
+
     SetConsoleOutputCP(CP_UTF8);
     vector<Usuario> usuarios;
 
@@ -88,9 +93,9 @@ void menuRegistro(vector<Usuario> &usuarios){
         cout << setw(50)<< "=======🚩🚩💣💣BUSCAMINAS 💣💣🚩🚩";
         cout <<"======"<< endl;
         cout << string(40, '=') << endl;
-        cout << "1)Registro." << endl;
-        cout << "2)Login." << endl;
-        cout << "3)salir." << endl;
+        cout << "|1)Registro.(🙋)                       |" << endl;
+        cout << "|2)Login.(📝)                          |" << endl;
+        cout << "|3)salir.(⏪)                          |" << endl;
         cout << string(40, '=') << endl;
         opcionReg = leerEnteroSeguro("Elija una opcion: ");
         cout << string(40, '=') <<'\n'<< endl;
@@ -115,7 +120,7 @@ void menuRegistro(vector<Usuario> &usuarios){
             break;
         }
         default:{
-            cout << "Opcion invalida\n";
+            cout << "Opcion invalida. ✘\n";
         }
         }
     } while (opcionReg != 3);
@@ -124,33 +129,36 @@ void menuRegistro(vector<Usuario> &usuarios){
 void menuPartidas(){
     int opcionPar;
     do {
-        cout << "== TIPOS DE JUEGO ==" << endl;
-        cout << "\n1) Partida niveles secuenciales." << endl;
-        cout << "2) partida Facil." << endl;
-        cout << "3) Partida Normal." << endl;
-        cout << "4) Partida Dificil." << endl;
-        cout << "5) Salir." << endl;
+        cout << "" << endl;
+        cout << "========================================" << endl;
+        cout << "==========🕹🕹 TIPOS DE JUEGO 🕹🕹==========" << endl;
+        cout << "========================================" << endl;
+        cout << "|n1) Partida niveles secuenciales.👾   |" << endl;
+        cout << "|2) partida Facil.(😊)                 |" << endl;
+        cout << "|3) Partida Normal.(😅)                |" << endl;
+        cout << "|4) Partida Dificil.(💀)               |" << endl;
+        cout << "|5) Salir.(⏪)                         |"<< endl;
         opcionPar = leerEnteroSeguro("Elija una opcion: ");
 
         switch(opcionPar)
         {
         case 1:{
-            cout << "Partidas en modo secuencial." << endl;
+            cout << "Partidas en modo secuencial.👾" << endl;
             funciones funciones;
             funciones.imprimirTablero();
 
             break;
         }
         case 2:{
-            cout << "Modo facil." << endl;
+            cout << "Modo facil.😊" << endl;
             break;
         }
         case 3:{
-            cout << "Modo Normal." << endl;
+            cout << "Modo Normal.😅" << endl;
             break;
         }
         case 4:{
-            cout << "Modo Dificl." << endl;
+            cout << "Modo Dificl.💀" << endl;
             break;
         }
         case 5:{
@@ -158,7 +166,7 @@ void menuPartidas(){
 
         }
         default:{
-            cout << "Opcion invalida\n";
+            cout << "Opcion invalida. ✘\n";
         }
         }
     } while (opcionPar != 5);
@@ -174,7 +182,7 @@ string leerTextoNoVacio(const string &mensaje){
             return texto;
         }
 
-        cout<<"este campo no puede quedar vacio intente de nuevo.";
+        cout<<"Este campo no puede quedar vacio intente de nuevo. ✘";
 
     }
 }
@@ -187,9 +195,9 @@ int opcionPri;
         cout << setw(45)<< "=====🚩🚩💣💣MENU PRINCIPAL💣💣🚩🚩";
         cout <<"====="<< endl;
         cout << string(40, '=') << endl;
-        cout << "1)PARTIDAS." << endl;
-        cout << "2)Rankin." << endl;
-        cout << "3)salir." << endl;
+        cout << "|1)PARTIDAS.(🕹)                        |" << endl;
+        cout << "|2)Rankin.(👑)                         |" << endl;
+        cout << "|3)salir.(⏪)                          |" << endl;
         opcionPri = leerEnteroSeguro("Elija una opcion: ");
 
         switch(opcionPri)
@@ -211,7 +219,7 @@ int opcionPri;
             break;
         }
         default:{
-            cout << "Opcion invalida\n";
+            cout << "Opcion invalida. ✘\n";
         }
         }
 
@@ -231,7 +239,7 @@ int leerEnteroSeguro(const string &mensaje){
 
         cin.clear();
         cin.ignore(numeric_limits<streamsize>::max(),'\n');
-        cout<<"Entrada invalida porfavor escriba un numero entero\n";
+        cout<<"Entrada invalida porfavor escriba un numero entero. ✘\n";
     }
 }
 
@@ -283,7 +291,7 @@ void guardarUsuariosEnArchivo(const vector<Usuario> &usuarios){
     ofstream archivoSalida(NOMBRE_ARCHIVO.c_str(),ios::trunc);
 
     if(!archivoSalida.is_open()){
-        cout<<"ERROR: no se puede abrir el archivo\n";
+        cout<<"ERROR: no se puede abrir el archivo. ✘\n";
         return;
     }
 
@@ -318,7 +326,7 @@ bool registrarUsuario(vector<Usuario> &usuarios){
     string nombre = leerTextoNoVacio("Nombre: ");
 
     if(buscarUsuario(usuarios,nombre) != -1){
-        cout<<"Ese usuario ya existe\n";
+        cout<<"Ese usuario ya existe. ✘\n";
         return false;
     }
 
@@ -335,7 +343,7 @@ bool registrarUsuario(vector<Usuario> &usuarios){
 
     usuarioActual = new Usuario(nuevo);
 
-    cout<<"Usuario registrado y logueado\n";
+    cout<<"Usuario registrado y logueado. ✅\n";
     return true;
 }
 
@@ -349,7 +357,7 @@ bool loginUsuario(vector<Usuario> &usuarios){
     int pos = buscarUsuario(usuarios,nombre);
 
     if(pos == -1){
-        cout<<"Usuario no existe\n";
+        cout<<"Usuario no existe. ✘\n";
         return false;
     }
 
@@ -357,10 +365,10 @@ bool loginUsuario(vector<Usuario> &usuarios){
 
         usuarioActual = new Usuario(usuarios[pos]);
 
-        cout<<"Login exitoso\n";
+        cout<<"Login exitoso. ✅\n";
         return true;
     }
 
-    cout<<"Contraseña incorrecta\n";
+    cout<<"Contraseña incorrecta. ✘\n";
     return false;
 }
