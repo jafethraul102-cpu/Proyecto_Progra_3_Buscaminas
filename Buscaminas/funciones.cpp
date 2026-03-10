@@ -7,7 +7,7 @@ using namespace std;
 
 funciones::funciones(){}
 
-const int NIVEL_BASIC=8;
+int NIVEL_BASIC=8;
 
 void funciones::imprimirTablero(){
 
@@ -41,6 +41,12 @@ void funciones::imprimirTablero(){
     for(int i = 0; i < NIVEL_BASIC; i++){
         for(int j = 0; j < NIVEL_BASIC; j++){
             cout << tablero2[i][j] << " ";
+        }
+        cout << endl;
+    }
+    for(int i = 0; i < NIVEL_BASIC; i++){
+        for(int j = 0; j < NIVEL_BASIC; j++){
+            cout << tablero1[i][j]<< " ";
         }
         cout << endl;
     }

@@ -7,6 +7,7 @@
 #include <vector>
 #include <fstream>
 #include <cstdlib>
+#include <sstream>
 
 using namespace std;
 
@@ -58,7 +59,7 @@ int main()
 }
 
 void ArtAsciiInicio(){
-
+//Raw String Litera o cadena de texto cruda o cadena literal sin escape
     cout << R"(
 _§§§§§§___§§__§§-§§§§§§__§§§§§§__§§§§___
 _§§___§§__§§__§§_§§___§__§§_____§§__§§__
@@ -471,7 +472,7 @@ void cargarUsuariosDesdeArchivo(vector<Usuario> &usuarios){
     }
 
     string linea;
-
+    stringstream ss(linea);
     while(getline(archivoEntrada,linea)){
 
         if(linea.empty()){
@@ -507,7 +508,6 @@ void cargarUsuariosDesdeArchivo(vector<Usuario> &usuarios){
 void guardarUsuariosEnArchivo(const vector<Usuario> &usuarios){
 
     ofstream archivoSalida(NOMBRE_ARCHIVO.c_str(),ios::trunc);
-
     if(!archivoSalida.is_open()){
         cout<<"ERROR: no se puede abrir el archivo.\n";
         return;
