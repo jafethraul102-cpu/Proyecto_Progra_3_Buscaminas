@@ -5,9 +5,10 @@
 #include <windows.h>
 #include "funciones.h"
 #include <vector>
+#include <sstream>
 #include <fstream>
 #include <cstdlib>
-#include <sstream>
+#include <cctype>
 
 using namespace std;
 
@@ -46,7 +47,7 @@ int main()
     system("color 0F");
     system("title BUSCAMINAS");
 
-    SetConsoleOutputCP(CP_UTF8);
+    SetConsoleOutputCP(65001);
     vector<Usuario> usuarios;
 
     cargarUsuariosDesdeArchivo(usuarios);
@@ -411,6 +412,7 @@ void menuPartidas(){
             colum=8;
             bombas=10;
             funciones.imprimirTablero(filas,colum,bombas);
+            funciones.menuJuego(filas,colum,bombas);
 
             break;
         }
@@ -420,6 +422,7 @@ void menuPartidas(){
             colum=8;
             bombas=10;
             funciones.imprimirTablero(filas,colum,bombas);
+            funciones.menuJuego(filas,colum,bombas);
             break;
         }
         case 3:{
@@ -428,6 +431,7 @@ void menuPartidas(){
             colum=16;
             bombas=40;
             funciones.imprimirTablero(filas,colum,bombas);
+            funciones.menuJuego(filas,colum,bombas);
             break;
         }
         case 4:{
@@ -436,6 +440,8 @@ void menuPartidas(){
             colum=30;
             bombas=99;
             funciones.imprimirTablero(filas,colum,bombas);
+            funciones.menuJuego(filas,colum,bombas);
+
             break;
         }
         case 5:{

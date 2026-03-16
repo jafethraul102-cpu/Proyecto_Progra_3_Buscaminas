@@ -5,6 +5,7 @@ class funciones{
 public:
     funciones();
     void imprimirTablero(int filas, int colum, int bombas);
+    void menuJuego(int filas, int colum, int bombas);
 };
 
 #endif
