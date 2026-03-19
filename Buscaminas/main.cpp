@@ -30,7 +30,7 @@ Usuario* usuarioActual = nullptr;
 
 void menuPrincipal(vector<Usuario> &usuarios);
 void menuRegistro(vector<Usuario> &usuarios);
-void menuPartidas();
+void menuPartidas(vector<Usuario> &usuarios);
 void ArtAsciiInicio();
 string leerTextoNoVacio(const string &mensaje);
 int leerEnteroSeguro(const string &mensaje);
@@ -41,6 +41,9 @@ void guardarUsuariosEnArchivo(const vector<Usuario> &usuarios);
 int buscarUsuario(const vector<Usuario> &usuarios,string nombre);
 bool registrarUsuario(vector<Usuario> &usuarios);
 bool loginUsuario(vector<Usuario> &usuarios);
+
+void mostrarRanking(vector<Usuario> usuarios);
+void ordenarUsuarios(vector<Usuario> &usuarios);
 
 int main()
 {
@@ -163,6 +166,7 @@ bool registrarUsuario(vector<Usuario> &usuarios){
 
     guardarUsuariosEnArchivo(usuarios);
 
+    delete usuarioActual;
     usuarioActual = new Usuario(nuevo);
 
     cout<<"Usuario registrado y logueado.\n";
@@ -228,7 +232,7 @@ void menuPrincipal(vector<Usuario> &usuarios){
         switch(opcionPri)
         {
         case 1:{
-            menuPartidas();
+            menuPartidas(usuarios);
             break;
         }
         case 2:{
@@ -236,7 +240,7 @@ void menuPrincipal(vector<Usuario> &usuarios){
             break;
         }
         case 3:{
-            cout<<"Rankin\n";
+            mostrarRanking(usuarios);
             break;
         }
         case 4:{
@@ -379,15 +383,19 @@ void menuMiCuenta(vector<Usuario> &usuarios){
     }while(true);
 }
 
-void menuPartidas(){
+void menuPartidas(vector<Usuario> &usuarios){
     int opcionPar;
     int bombas =0;
     int colum=0;
     int filas=0;
+
+    string tableroBombas[50][50];
+    string tableroVista[50][50];
+
     funciones funciones;
 
     do {
-        cout << "" << endl;
+
         cout << "========================================" << endl;
         cout << "==========🕹🕹 TIPOS DE JUEGO🕹🕹 ==========" << endl;
         cout << "========================================" << endl;
@@ -400,20 +408,37 @@ void menuPartidas(){
         cout << "|4) Partida Dificil.(💀)               |" << endl;
         cout << "|" << string(38,'-') << "|\n";
         cout << "|5) Salir.(⏪)                         |"<< endl;
+
         cout << string(40, '=') << endl;
+
         opcionPar = leerEnteroSeguro("Elija una opcion: ");
+
         cout << string(40, '=') << endl;
 
         switch(opcionPar)
         {
+
         case 1:{
             cout << "Partidas en modo secuencial.👾" << endl;
-            filas=8;
-            colum=8;
-            bombas=10;
-            funciones.imprimirTablero(filas,colum,bombas);
-            funciones.menuJuego(filas,colum,bombas);
 
+            filas = 8;
+            colum = 8;
+            bombas = 10;
+
+            funciones.InicializarTablero(filas,colum,bombas,tableroBombas,tableroVista);
+            int Resultado = funciones.menuJuego(filas,colum,bombas,tableroBombas,tableroVista);
+
+            if(Resultado==1){
+                cout<<"!!!GANASTE 5 PUNTOS¡¡¡\n";
+                usuarioActual->puntuacion+=5;
+
+                int pos = buscarUsuario(usuarios, usuarioActual->Nombre);
+                if(pos != -1){
+                    usuarios[pos].puntuacion = usuarioActual->puntuacion;
+                }
+
+                guardarUsuariosEnArchivo(usuarios);
+            }
             break;
         }
         case 2:{
@@ -421,8 +446,22 @@ void menuPartidas(){
             filas=8;
             colum=8;
             bombas=10;
-            funciones.imprimirTablero(filas,colum,bombas);
-            funciones.menuJuego(filas,colum,bombas);
+
+            funciones.InicializarTablero(filas,colum,bombas,tableroBombas,tableroVista);
+            int Resultado =  funciones.menuJuego(filas,colum,bombas,tableroBombas,tableroVista);
+
+            if(Resultado==1){
+                cout<<"!!!GANASTE 1 PUNTOS¡¡¡\n";
+                usuarioActual->puntuacion+=1;
+
+                int pos = buscarUsuario(usuarios, usuarioActual->Nombre);
+                if(pos != -1){
+                    usuarios[pos].puntuacion = usuarioActual->puntuacion;
+                }
+
+                guardarUsuariosEnArchivo(usuarios);
+            }
+
             break;
         }
         case 3:{
@@ -430,8 +469,22 @@ void menuPartidas(){
             filas=16;
             colum=16;
             bombas=40;
-            funciones.imprimirTablero(filas,colum,bombas);
-            funciones.menuJuego(filas,colum,bombas);
+
+            funciones.InicializarTablero(filas,colum,bombas,tableroBombas,tableroVista);
+            int Resultado = funciones.menuJuego(filas,colum,bombas,tableroBombas,tableroVista);
+
+            if(Resultado==1){
+                cout<<"!!!GANASTE 2 PUNTOS¡¡¡\n";
+                usuarioActual->puntuacion+=2;
+
+                int pos = buscarUsuario(usuarios, usuarioActual->Nombre);
+                if(pos != -1){
+                    usuarios[pos].puntuacion = usuarioActual->puntuacion;
+                }
+
+                guardarUsuariosEnArchivo(usuarios);
+            }
+
             break;
         }
         case 4:{
@@ -439,9 +492,21 @@ void menuPartidas(){
             filas=16;
             colum=30;
             bombas=99;
-            funciones.imprimirTablero(filas,colum,bombas);
-            funciones.menuJuego(filas,colum,bombas);
 
+            funciones.InicializarTablero(filas,colum,bombas,tableroBombas,tableroVista);
+            int Resultado = funciones.menuJuego(filas,colum,bombas,tableroBombas,tableroVista);
+
+            if(Resultado==1){
+                cout<<"!!!GANASTE 3 PUNTOS¡¡¡\n";
+                usuarioActual->puntuacion+=3;
+
+                int pos = buscarUsuario(usuarios, usuarioActual->Nombre);
+                if(pos != -1){
+                    usuarios[pos].puntuacion = usuarioActual->puntuacion;
+                }
+
+                guardarUsuariosEnArchivo(usuarios);
+            }
             break;
         }
         case 5:{
@@ -455,6 +520,37 @@ void menuPartidas(){
     } while (opcionPar != 5);
 }
 
+void mostrarRanking(vector<Usuario> usuarios){
+
+    ordenarUsuarios(usuarios);
+
+    cout << "\n=====================================\n";
+    cout << "                RANKING             \n";
+    cout << "=====================================\n";
+
+    cout << left << setw(20) << "Nombre" << "Puntos\n";
+    cout << "-------------------------------------\n";
+
+    for(int i = 0; i < usuarios.size(); i++){
+        cout << left << setw(20) << usuarios[i].Nombre<< usuarios[i].puntuacion << endl;
+    }
+
+    cout << "=====================================\n";
+}
+
+//ordenamineto burbuja
+void ordenarUsuarios(vector<Usuario> &usuarios){
+    for(int i = 0; i < usuarios.size()-1; i++){
+        for(int j = 0; j < usuarios.size()-i-1; j++){
+
+            if(usuarios[j].puntuacion < usuarios[j+1].puntuacion){
+                Usuario temp = usuarios[j];
+                usuarios[j] = usuarios[j+1];
+                usuarios[j+1] = temp;
+            }
+        }
+    }
+}
 
 int leerEnteroSeguro(const string &mensaje){
     int numero;
