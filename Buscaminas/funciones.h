@@ -12,8 +12,9 @@ public:
     void imprimirTablero(int filas,int colum,std::string TableroVista[][50]);
     int menuJuego(int filas,int colum,int bombas,std::string TableroBombas[][50],std::string TableroVista[][50]);
     void ColocarIdentificadoresdeMinas(int filas,int colum,std::string TableroBombas[][50]);
-    void descubrirZona(int fila,int colu,int filas,int colum,std::string TableroBombas[][50],std::string TableroVista[][50]);
+    void descubrirZona(int filaIngresada,int columnaIngresada,int filas,int colum,std::string TableroBombas[][50],std::string TableroVista[][50]);
     bool verificarVictoria(int filas,int colum, std::string TableroBombas[][50],std::string TableroVista[][50]);
+    int leerEnteroSeguro(const std::string &mensaje);
 };
 
 #endif

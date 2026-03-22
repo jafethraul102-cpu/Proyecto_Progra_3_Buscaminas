@@ -2,6 +2,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <iomanip>
+#include <limits>
 #include "funciones.h"
 
 using namespace std;
@@ -95,11 +96,11 @@ void funciones::ColocarIdentificadoresdeMinas(int filas,int colum,string Tablero
 
             for(int k=0;k<8;k++){
 
-                int ni=i+x[k];
-                int nj=j+y[k];
+                int sumai=i+x[k];
+                int sumaj=j+y[k];
 
-                if(ni>=0 && ni<filas && nj>=0 && nj<colum){
-                    if(TableroBombas[ni][nj]=="*"){
+                if(sumai>=0 && sumai<filas && sumaj>=0 && sumaj<colum){
+                    if(TableroBombas[sumai][sumaj]=="*"){
                         contador++;
                     }
                 }
@@ -112,18 +113,18 @@ void funciones::ColocarIdentificadoresdeMinas(int filas,int colum,string Tablero
     }
 }
 
-void funciones::descubrirZona(int fila,int colu,int filas,int colum, string TableroBombas[][50], string TableroVista[][50]){
+void funciones::descubrirZona(int filaingresada,int columnaIngresada,int filas,int colum, string TableroBombas[][50], string TableroVista[][50]){
 
-    if(fila<0 || fila>=filas || colu<0 || colu>=colum){
+    if(filaingresada<0 || filaingresada>=filas || columnaIngresada<0 || columnaIngresada>=colum){
         return;
     }
-    if(TableroVista[fila][colu]!="-"){
+    if(TableroVista[filaingresada][columnaIngresada]!="-"){
         return;
     }
 
-    TableroVista[fila][colu]=TableroBombas[fila][colu];
+    TableroVista[filaingresada][columnaIngresada]=TableroBombas[filaingresada][columnaIngresada];
 
-    if(TableroBombas[fila][colu]!="0"){
+    if(TableroBombas[filaingresada][columnaIngresada]!="0"){
         return;
     }
 
@@ -133,7 +134,7 @@ void funciones::descubrirZona(int fila,int colu,int filas,int colum, string Tabl
             if(i==0 && j==0){
                 continue;
             }
-            descubrirZona(fila+i,colu+j,filas,colum,TableroBombas,TableroVista);
+            descubrirZona(filaingresada+i,columnaIngresada+j,filas,colum,TableroBombas,TableroVista);
         }
     }
 }
@@ -151,7 +152,7 @@ int funciones::menuJuego(int filas,int colum,int bombas,string TableroBombas[][5
         cout<<"4. Salir.\n";
         cout << string(40, '=') << endl;
         cout<<"Opcion: ";
-        cin>>opcion;
+        opcion = leerEnteroSeguro("Opcion: ");
         cout << string(40, '=') << endl;
         int fila,colu;
 
@@ -161,6 +162,7 @@ int funciones::menuJuego(int filas,int colum,int bombas,string TableroBombas[][5
 
             cout<<"fila(espacio)columna: ";
             cin>>fila>>colu;
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
             if(fila < 0 || fila >= filas || colu < 0 || colu >= colum){
                 cout<<"Coordenadas invalidas\n";
@@ -200,7 +202,7 @@ int funciones::menuJuego(int filas,int colum,int bombas,string TableroBombas[][5
         case 2:
             cout<<"fila(espacio)columna: ";
             cin>>fila>>colu;
-
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
             if(fila < 0 || fila >= filas || colu < 0 || colu >= colum){
                 cout<<"Coordenadas invalidas\n";
                 break;
@@ -217,7 +219,7 @@ int funciones::menuJuego(int filas,int colum,int bombas,string TableroBombas[][5
             }
 
             TableroVista[fila][colu]="/";
-            banderas++; //
+            banderas++;
 
             imprimirTablero(filas,colum,TableroVista);
             break;
@@ -225,7 +227,7 @@ int funciones::menuJuego(int filas,int colum,int bombas,string TableroBombas[][5
         case 3:
             cout<<"fila(espacio)columna: ";
             cin>>fila>>colu;
-
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
             if(fila < 0 || fila >= filas || colu < 0 || colu >= colum){
                 cout<<"Coordenadas invalidas\n";
                 break;
@@ -267,4 +269,20 @@ bool funciones::verificarVictoria(int filas,int colum, string TableroBombas[][50
     }
 
     return true;
+}
+
+int funciones::leerEnteroSeguro(const string &mensaje){
+    int numero;
+    while(true){
+        cout<<mensaje;
+
+        if(cin>>numero){
+            cin.ignore(numeric_limits<streamsize>::max(),'\n');
+            return numero;
+        }
+
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(),'\n');
+        cout<<"Entrada invalida porfavor escriba un numero entero.\n";
+    }
 }

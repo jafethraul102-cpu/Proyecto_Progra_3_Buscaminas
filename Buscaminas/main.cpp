@@ -420,17 +420,31 @@ void menuPartidas(vector<Usuario> &usuarios){
 
         case 1:{
             cout << "Partidas en modo secuencial.👾" << endl;
+            int nivelesFilas[3] = {8, 16, 16};
+            int nivelesColumnas[3] = {8, 16, 30};
+            int nivelesBombas[3] = {10, 40, 99};
 
-            filas = 8;
-            colum = 8;
-            bombas = 10;
+            bool ganoTodo = true;
 
-            funciones.InicializarTablero(filas,colum,bombas,tableroBombas,tableroVista);
-            int Resultado = funciones.menuJuego(filas,colum,bombas,tableroBombas,tableroVista);
+            for(int n = 0; n < 3; n++){
 
-            if(Resultado==1){
+                filas = nivelesFilas[n];
+                colum = nivelesColumnas[n];
+                bombas = nivelesBombas[n];
+
+                funciones.InicializarTablero(filas,colum,bombas,tableroBombas,tableroVista);
+
+                int resultado = funciones.menuJuego(filas,colum,bombas,tableroBombas,tableroVista);
+
+                if(resultado != 1){
+                    ganoTodo = false;
+                    break;
+                }
+            }
+
+            if(ganoTodo){
                 cout<<"!!!GANASTE 5 PUNTOS¡¡¡\n";
-                usuarioActual->puntuacion+=5;
+                usuarioActual->puntuacion += 5;
 
                 int pos = buscarUsuario(usuarios, usuarioActual->Nombre);
                 if(pos != -1){
@@ -439,6 +453,7 @@ void menuPartidas(vector<Usuario> &usuarios){
 
                 guardarUsuariosEnArchivo(usuarios);
             }
+
             break;
         }
         case 2:{
