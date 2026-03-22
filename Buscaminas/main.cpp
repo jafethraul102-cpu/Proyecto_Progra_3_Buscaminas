@@ -389,8 +389,8 @@ void menuPartidas(vector<Usuario> &usuarios){
     int colum=0;
     int filas=0;
 
-    string tableroBombas[50][50];
-    string tableroVista[50][50];
+    char tableroBombas[50][50];
+    char tableroVista[50][50];
 
     funciones funciones;
 
@@ -400,12 +400,23 @@ void menuPartidas(vector<Usuario> &usuarios){
         cout << "==========🕹🕹 TIPOS DE JUEGO🕹🕹 ==========" << endl;
         cout << "========================================" << endl;
         cout << "|1) Partida niveles secuenciales.👾    |" << endl;
+        cout << "|   Gana 5 puntos despues de completar |" << endl;
+        cout << "|   los 3 niveles(Facil,Normal,Dificil)|" << endl;
         cout << "|" << string(38,'-') << "|\n";
         cout << "|2) partida Facil.(😊)                 |" << endl;
+        cout << "|Gana 1 punto despues de completar la  |" << endl;
+        cout << "|partida con el tablero 8x8            |" << endl;
+        cout << "|con 10 minas.                         |" << endl;
         cout << "|" << string(38,'-') << "|\n";
         cout << "|3) Partida Normal.(😅)                |" << endl;
+        cout << "|Gana 2 punto despues de completar la  |" << endl;
+        cout << "|partida con el tablero 16x16          |" << endl;
+        cout << "|con 40 minas.                         |" << endl;
         cout << "|" << string(38,'-') << "|\n";
         cout << "|4) Partida Dificil.(💀)               |" << endl;
+        cout << "|Gana 3 punto despues de completar la  |" << endl;
+        cout << "|partida con el tablero 16x30          |" << endl;
+        cout << "|con 99 minas.                         |" << endl;
         cout << "|" << string(38,'-') << "|\n";
         cout << "|5) Salir.(⏪)                         |"<< endl;
 
@@ -443,7 +454,9 @@ void menuPartidas(vector<Usuario> &usuarios){
             }
 
             if(ganoTodo){
+                SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 10);
                 cout<<"!!!GANASTE 5 PUNTOS¡¡¡\n";
+                SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
                 usuarioActual->puntuacion += 5;
 
                 int pos = buscarUsuario(usuarios, usuarioActual->Nombre);
@@ -466,7 +479,9 @@ void menuPartidas(vector<Usuario> &usuarios){
             int Resultado =  funciones.menuJuego(filas,colum,bombas,tableroBombas,tableroVista);
 
             if(Resultado==1){
+                SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 10);
                 cout<<"!!!GANASTE 1 PUNTOS¡¡¡\n";
+                SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
                 usuarioActual->puntuacion+=1;
 
                 int pos = buscarUsuario(usuarios, usuarioActual->Nombre);
@@ -489,7 +504,10 @@ void menuPartidas(vector<Usuario> &usuarios){
             int Resultado = funciones.menuJuego(filas,colum,bombas,tableroBombas,tableroVista);
 
             if(Resultado==1){
+                SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 10);
                 cout<<"!!!GANASTE 2 PUNTOS¡¡¡\n";
+                SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
+
                 usuarioActual->puntuacion+=2;
 
                 int pos = buscarUsuario(usuarios, usuarioActual->Nombre);
@@ -512,7 +530,9 @@ void menuPartidas(vector<Usuario> &usuarios){
             int Resultado = funciones.menuJuego(filas,colum,bombas,tableroBombas,tableroVista);
 
             if(Resultado==1){
+                SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 10);
                 cout<<"!!!GANASTE 3 PUNTOS¡¡¡\n";
+                SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
                 usuarioActual->puntuacion+=3;
 
                 int pos = buscarUsuario(usuarios, usuarioActual->Nombre);

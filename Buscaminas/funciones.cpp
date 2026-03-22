@@ -3,18 +3,19 @@
 #include <ctime>
 #include <iomanip>
 #include <limits>
+#include <windows.h>
 #include "funciones.h"
 
 using namespace std;
 
 funciones::funciones(){}
 
-void funciones::InicializarTablero(int filas,int colum,int bombas,string TableroBombas[][50],string TableroVista[][50]){
+void funciones::InicializarTablero(int filas,int colum,int bombas,char TableroBombas[][50],char TableroVista[][50]){
 
     for(int i=0;i<filas;i++){
         for(int j=0;j<colum;j++){
-            TableroBombas[i][j]="0";
-            TableroVista[i][j]="-";
+            TableroBombas[i][j]='0';
+            TableroVista[i][j]='-';
         }
     }
 
@@ -23,33 +24,31 @@ void funciones::InicializarTablero(int filas,int colum,int bombas,string Tablero
     int colocadas=0;
 
     while(colocadas<bombas){
-
         int f=rand()%filas;
         int c=rand()%colum;
 
-        if(TableroBombas[f][c]!="*"){
-            TableroBombas[f][c]="*";
+        if(TableroBombas[f][c]!='*'){
+            TableroBombas[f][c]='*';
             colocadas++;
         }
     }
 
     ColocarIdentificadoresdeMinas(filas,colum,TableroBombas);
-
     imprimirTablero(filas,colum,TableroVista);
 }
 
-void funciones::imprimirTablero(int filas,int colum,string TableroVista[][50]){
+void funciones::imprimirTablero(int filas,int colum,char TableroVista[][50]){
+
     int tamañoLinea=0;
-    if(colum==8){
-        tamañoLinea=32;
-    }else if(colum==16){
-        tamañoLinea=55;
-    }else{
-        tamañoLinea=97;
-    }
+
+    if(colum==8) tamañoLinea=32;
+    else if(colum==16) tamañoLinea=55;
+    else tamañoLinea=97;
+
     cout<<endl;
-    cout << string(tamañoLinea, '=') << endl;
+    cout<<string(tamañoLinea,'=')<<endl;
     cout<<endl;
+
     cout<<"    ";
     for(int j=0;j<colum;j++){
         if(j<10) cout<<"| "<<j;
@@ -62,45 +61,58 @@ void funciones::imprimirTablero(int filas,int colum,string TableroVista[][50]){
         cout<<"---";
     }
     cout<<"--"<<endl;
-
     for(int i=0;i<filas;i++){
-
         cout<<setw(3)<<i<<"|";
 
         for(int j=0;j<colum;j++){
-            cout<<"  "<<TableroVista[i][j];
+
+            char c = TableroVista[i][j];
+
+            if(c == '-'){
+                SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 14); // Amarillo
+            }
+            else if(c == '/'){
+                SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 9); // Azul
+            }
+            else if(c == '*'){
+                SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 12); // Rojo
+            }
+            else{
+                SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 2); // Verde oscuro (números)
+            }
+
+            cout << "  " << c;
+
+            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
         }
 
         cout<<endl;
     }
-    cout<<endl;
-    cout << string(tamañoLinea, '=') << endl;
 
+    cout<<endl;
+    cout<<string(tamañoLinea,'=')<<endl;
 }
 
-void funciones::ColocarIdentificadoresdeMinas(int filas,int colum,string TableroBombas[][50]){
+void funciones::ColocarIdentificadoresdeMinas(int filas,int colum,char TableroBombas[][50]){
 
     int x[8]={-1,-1,-1,0,0,1,1,1};
     int y[8]={-1,0,1,-1,1,-1,0,1};
 
-    string numeros[9] = {"0","1","2","3","4","5","6","7","8"};
+    char numeros[9] = {'0','1','2','3','4','5','6','7','8'};
 
     for(int i=0;i<filas;i++){
         for(int j=0;j<colum;j++){
 
-            if(TableroBombas[i][j]=="*"){
-                continue;
-            }
+            if(TableroBombas[i][j]=='*') continue;
 
             int contador=0;
 
             for(int k=0;k<8;k++){
+                int ni=i+x[k];
+                int nj=j+y[k];
 
-                int sumai=i+x[k];
-                int sumaj=j+y[k];
-
-                if(sumai>=0 && sumai<filas && sumaj>=0 && sumaj<colum){
-                    if(TableroBombas[sumai][sumaj]=="*"){
+                if(ni>=0 && ni<filas && nj>=0 && nj<colum){
+                    if(TableroBombas[ni][nj]=='*'){
                         contador++;
                     }
                 }
@@ -113,156 +125,152 @@ void funciones::ColocarIdentificadoresdeMinas(int filas,int colum,string Tablero
     }
 }
 
-void funciones::descubrirZona(int filaingresada,int columnaIngresada,int filas,int colum, string TableroBombas[][50], string TableroVista[][50]){
+void funciones::descubrirZona(int fila,int col,int filas,int colum,char TableroBombas[][50],char TableroVista[][50]){
 
-    if(filaingresada<0 || filaingresada>=filas || columnaIngresada<0 || columnaIngresada>=colum){
-        return;
-    }
-    if(TableroVista[filaingresada][columnaIngresada]!="-"){
-        return;
-    }
+    if(fila<0 || fila>=filas || col<0 || col>=colum) return;
 
-    TableroVista[filaingresada][columnaIngresada]=TableroBombas[filaingresada][columnaIngresada];
+    if(TableroVista[fila][col]!='-') return;
 
-    if(TableroBombas[filaingresada][columnaIngresada]!="0"){
-        return;
-    }
+    TableroVista[fila][col]=TableroBombas[fila][col];
+
+    if(TableroBombas[fila][col]!='0') return;
 
     for(int i=-1;i<=1;i++){
         for(int j=-1;j<=1;j++){
 
-            if(i==0 && j==0){
-                continue;
-            }
-            descubrirZona(filaingresada+i,columnaIngresada+j,filas,colum,TableroBombas,TableroVista);
+            if(i==0 && j==0) continue;
+
+            descubrirZona(fila+i,col+j,filas,colum,TableroBombas,TableroVista);
         }
     }
 }
 
-int funciones::menuJuego(int filas,int colum,int bombas,string TableroBombas[][50],string TableroVista[][50]){
+int funciones::menuJuego(int filas,int colum,int bombas,char TableroBombas[][50],char TableroVista[][50]){
+
     int banderas = 0;
     int opcion;
 
     do{
         cout<<"Banderas: "<<banderas<<"/"<<bombas<<"\n";
-        cout << string(40, '=') << endl;
-        cout<<"1. Quitar casilla.\n";
-        cout<<"2. Poner Bandera.\n";
-        cout<<"3. Quitar bandera.\n";
-        cout<<"4. Salir.\n";
-        cout << string(40, '=') << endl;
-        cout<<"Opcion: ";
+        cout<<string(40,'=')<<endl;
+
+        cout<<"1. Quitar casillaU(-).\n";
+        cout<<"2. Poner bandera(/).\n";
+        cout<<"3. Quitar bandera(x->/).\n";
+        cout<<"4. Salir(x).\n";
+
+        cout<<string(40,'=')<<endl;
+
         opcion = leerEnteroSeguro("Opcion: ");
-        cout << string(40, '=') << endl;
-        int fila,colu;
+
+        int fila,col;
 
         switch(opcion){
 
         case 1:
-
-            cout<<"fila(espacio)columna: ";
-            cin>>fila>>colu;
+            cout<<"fila columna: ";
+            cin>>fila>>col;
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
-            if(fila < 0 || fila >= filas || colu < 0 || colu >= colum){
+            if(fila<0 || fila>=filas || col<0 || col>=colum){
                 cout<<"Coordenadas invalidas\n";
                 break;
             }
 
-            if(TableroVista[fila][colu] != "-"){
-                cout<<"Esa casilla ya fue usada.\n";
+            if(TableroVista[fila][col] != '-'){
+                cout<<"Casilla ya usada\n";
                 break;
             }
 
-            if(TableroBombas[fila][colu]=="*"){
+            if(TableroBombas[fila][col]=='*'){
+
                 for(int i=0;i<filas;i++){
                     for(int j=0;j<colum;j++){
-                        if(TableroBombas[i][j]=="*"){
-                            TableroVista[i][j]="*";
+                        if(TableroBombas[i][j]=='*'){
+                            TableroVista[i][j]='*';
                         }
                     }
                 }
 
                 imprimirTablero(filas,colum,TableroVista);
-
                 cout<<"PERDISTE\n";
                 return 0;
             }
 
-            descubrirZona(fila,colu,filas,colum,TableroBombas,TableroVista);
+            descubrirZona(fila,col,filas,colum,TableroBombas,TableroVista);
 
             imprimirTablero(filas,colum,TableroVista);
 
             if(verificarVictoria(filas,colum,TableroBombas,TableroVista)){
+                cout<<"GANASTE\n";
                 return 1;
             }
 
             break;
 
         case 2:
-            cout<<"fila(espacio)columna: ";
-            cin>>fila>>colu;
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            if(fila < 0 || fila >= filas || colu < 0 || colu >= colum){
+            cout<<"fila columna: ";
+            cin>>fila>>col;
+
+            if(fila<0 || fila>=filas || col<0 || col>=colum){
                 cout<<"Coordenadas invalidas\n";
                 break;
             }
 
-            if(TableroVista[fila][colu] != "-"){
-                cout<<"No puedes poner bandera aqui.\n";
+            if(TableroVista[fila][col] != '-'){
+                cout<<"No puedes poner bandera\n";
                 break;
             }
 
             if(banderas >= bombas){
-                cout<<"Ya colocaste todas las banderas.\n";
+                cout<<"Ya no puedes poner mas\n";
                 break;
             }
 
-            TableroVista[fila][colu]="/";
+            TableroVista[fila][col]='/';
             banderas++;
 
             imprimirTablero(filas,colum,TableroVista);
             break;
 
         case 3:
-            cout<<"fila(espacio)columna: ";
-            cin>>fila>>colu;
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            if(fila < 0 || fila >= filas || colu < 0 || colu >= colum){
+            cout<<"fila columna: ";
+            cin>>fila>>col;
+
+            if(fila<0 || fila>=filas || col<0 || col>=colum){
                 cout<<"Coordenadas invalidas\n";
                 break;
             }
 
-            if(TableroVista[fila][colu] != "/"){
-                cout<<"No puedes quitar una bandera porque no hay.\n";
+            if(TableroVista[fila][col] != '/'){
+                cout<<"No hay bandera\n";
                 break;
             }
 
-            TableroVista[fila][colu]="-";
+            TableroVista[fila][col]='-';
             banderas--;
 
             imprimirTablero(filas,colum,TableroVista);
             break;
 
         case 4:
-            cout<<"saliendo.\n";
+            cout<<"Saliendo...\n";
             break;
 
         default:
-            cout<<"opcion incorreccta.\n";
+            cout<<"Opcion incorrecta\n";
         }
-
 
     }while(opcion!=4);
 
     return 0;
 }
 
-bool funciones::verificarVictoria(int filas,int colum, string TableroBombas[][50],string TableroVista[][50]){
+bool funciones::verificarVictoria(int filas,int colum,char TableroBombas[][50],char TableroVista[][50]){
 
     for(int i=0;i<filas;i++){
         for(int j=0;j<colum;j++){
-            if(TableroBombas[i][j] != "*" && TableroVista[i][j] == "-"){
+            if(TableroBombas[i][j] != '*' && TableroVista[i][j] == '-'){
                 return false;
             }
         }
@@ -272,7 +280,9 @@ bool funciones::verificarVictoria(int filas,int colum, string TableroBombas[][50
 }
 
 int funciones::leerEnteroSeguro(const string &mensaje){
+
     int numero;
+
     while(true){
         cout<<mensaje;
 
@@ -283,6 +293,6 @@ int funciones::leerEnteroSeguro(const string &mensaje){
 
         cin.clear();
         cin.ignore(numeric_limits<streamsize>::max(),'\n');
-        cout<<"Entrada invalida porfavor escriba un numero entero.\n";
+        cout<<"Entrada invalida, ingrese un numero\n";
     }
 }
