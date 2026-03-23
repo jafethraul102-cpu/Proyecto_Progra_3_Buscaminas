@@ -2,7 +2,6 @@
 #define FUNCIONES_H
 
 #include <string>
-using namespace std;
 
 class funciones{
 public:
@@ -14,7 +13,7 @@ public:
     void ColocarIdentificadoresdeMinas(int filas,int colum,char TableroBombas[][50]);
     void descubrirZona(int filaIngresada,int columnaIngresada,int filas,int colum,char TableroBombas[][50],char TableroVista[][50]);
     bool verificarVictoria(int filas,int colum, char TableroBombas[][50],char TableroVista[][50]);
-    int leerEnteroSeguro(const string &mensaje);
+    int leerEnteroSeguro(const std::string &mensaje);
 };
 
 #endif
